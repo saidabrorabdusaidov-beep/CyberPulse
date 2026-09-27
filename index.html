@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberPulse | Kelajak Texnologiyalari va Gaming</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #05050a;
+            --card-bg: rgba(13, 13, 26, 0.7);
+            --neon-pink: #ff007f;
+            --neon-blue: #00f3ff;
+            --neon-purple: #9d00ff;
+            --text-color: #e0e0e0;
+            --text-light: #a0a0c0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-purple);
+            border-radius: 4px;
+        }
+
+        /* Background Glow Orbs */
+        .bg-glow {
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        .glow-1 {
+            top: -100px;
+            left: -100px;
+            background: var(--neon-pink);
+            animation: floatGlow 10s infinite alternate;
+        }
+        .glow-2 {
+            bottom: -100px;
+            right: -100px;
+            background: var(--neon-blue);
+            animation: floatGlow 12s infinite alternate-reverse;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.2); }
+        }
+
+        /* Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(5, 5, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 900;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+        .logo span {
+            color: var(--neon-pink);
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue);
+        }
+
+        .nav-btn {
+            padding: 10px 25px;
+            border: 2px solid var(--neon-pink);
+            background: transparent;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.4s;
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: var(--neon-pink);
+            box-shadow: 0 0 25px var(--neon-pink);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8%;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 15px;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+            animation: pulseBadge 2s infinite;
+        }
+
+        @keyframes pulseBadge {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; text-shadow: 0 0 8px var(--neon-blue); }
+        }
+
+        .hero-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 52px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .hero-content h1 span {
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            color: var(--text-light);
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn-primary {
+            padding: 14px 30px;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 25px var(--neon-blue);
+            transform: translateY(-3px);
+        }
+
+        .btn-secondary {
+            padding: 14px 30px;
+            background: transparent;
+            border: 2px solid var(--text-light);
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .btn-secondary:hover {
+            border-color: #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Hero Graphic / 3D feel */
+        .hero-graphic {
+            position: relative;
+            width: 450px;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cyber-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px dashed rgba(0, 243, 255, 0.3);
+            border-radius: 50%;
+            animation: spin 20s linear infinite;
+        }
+
+        .cyber-circle-2 {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border: 2px solid rgba(255, 0, 127, 0.3);
+            border-radius: 50%;
+            animation: spinReverse 15s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes spinReverse {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
+        }
+
+        .center-icon {
+            font-size: 90px;
+            color: var(--neon-blue);
+            text-shadow: 0 0 30px var(--neon-blue);
+            animation: floatIcon 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatIcon {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 38px;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .section-title h2 span {
+            color: var(--neon-pink);
+        }
+        .section-title p {
+            color: var(--text-light);
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            transition: 0.4s;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            opacity: 0;
+            transition: 0.4s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 243, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 243, 255, 0.1);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 45px;
+            color: var(--neon-blue);
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
+        }
+
+        .card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .card p {
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 8%;
+            background: rgba(3, 3, 6, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        footer p {
+            color: var(--text-light);
+            font-size: 16px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .social-icons a:hover {
+            background: var(--neon-blue);
+            color: #000;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero {
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+                height: auto;
+                padding-top: 140px;
+                padding-bottom: 80px;
+            }
+            .hero-content {
+                max-width: 100%;
+                margin-bottom: 50px;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .hero-graphic {
+                width: 300px;
+                height: 300px;
+            }
+            nav ul {
+                display: none; /* oddiy holatda yashiriladi, xohlasangiz menyu qo'shishingiz mumkin */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background glowing decorative layers -->
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+
+    <!-- Navigation Bar -->
+    <header>
+        <a href="#" class="logo">CYBER<span>PULSE</span></a>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Asosiy</a></li>
+                <li><a href="#features">Texnologiyalar</a></li>
+                <li><a href="#gaming">Gaming</a></li>
+                <li><a href="#contact">Aloqa</a></li>
+            </ul>
+        </nav>
+        <button class="nav-btn">Tizimga Kirish</button>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="badge"><i class="fa-solid fa-bolt"></i> KELAJAK HOZIRDAN BOSHLANADI</span>
+            <h1>Kiber olam va o'yinlar olamiga <span>xush kelibsiz</span></h1>
+            <p>Sun'iy intellekt, ilg'or gadjetlar, virtual reallik va eng so'nggi gaming yangiliklari bilan tanishing. Hammasi bitta yagona platformada.</p>
+            <div class="hero-buttons">
+                <a href="#features" class="btn-primary">Kashf Etish</a>
+                <a href="#contact" class="btn-secondary">Bog'lanish</a>
+            </div>
+        </div>
+        <div class="hero-graphic">
+            <div class="cyber-circle"></div>
+            <div class="cyber-circle-2"></div>
+            <i class="fa-solid fa-microchip center-icon"></i>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-title">
+            <h2>Asosiy <span>Yo'nalishlar</span></h2>
+            <p>Bizning platforma qamrab olgan eng qiziqarli mavzular</p>
+        </div>
+        <div class="grid-container">
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
+                <h3>Sun'iy Intellekt</h3>
+                <p>Neyrotarmoqlar evolyutsiyasi, kelajakdagi avtomatlashtirish jarayonlari va kundalik hayotimizdagi o'rni.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-gamepad"></i></div>
+                <h3>Next-Gen Gaming</h3>
+                <p>Eng kuchli grafikaga ega o'yinlar, kiber-sport musobaqalari va virtual reallik (VR) texnologiyalari.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>Kiberxavfsizlik</h3>
+                <p>Ma'lumotlarni himoya qilish usullari, zamonaviy shifrlash texnologiyalari va raqamli maxfiylik.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <p>&copy; 2026 CyberPulse. Barcha huquqlar himoyalangan.</p>
+        <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-github"></i></a>
+            <a href="#"><i class="fa-brands fa-telegram"></i></a>
+            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+    </footer>
+
+</body>
+</html>
