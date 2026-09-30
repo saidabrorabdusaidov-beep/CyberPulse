@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kosmos: Quyosh sistemasi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#04050d;--ink:#eaedff;--mute:#9098c8;--pc:#ffb43a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:radial-gradient(ellipse at 50% 45%,#0d1030,var(--bg) 70%);color:var(--ink);font-family:Manrope,system-ui,sans-serif}
+#sky{position:fixed;inset:0;z-index:0}
+header{position:fixed;top:0;left:0;right:0;z-index:5;text-align:center;padding:.8rem 1rem 0;pointer-events:none}
+h1{font-family:Unbounded,sans-serif;font-weight:800;font-size:clamp(1.3rem,4vw,2.1rem);letter-spacing:.08em;display:flex;justify-content:center}
+h1 span{display:inline-block;opacity:0;transform:translateY(40px) scale(.5);animation:letter .9s cubic-bezier(.2,.9,.3,1.4) forwards;background:linear-gradient(180deg,#fff,#9aa6ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes letter{to{opacity:1;transform:none}}
+header p{color:var(--mute);font-size:.85rem;animation:fade 1s 1.4s both}
+@keyframes fade{from{opacity:0}}
+.wrap{position:fixed;inset:0;padding-top:70px;display:grid;place-items:center;z-index:2;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+body.open .wrap{transform:translateX(-11vw) scale(.92)}
+.stage{--S:min(96vw,calc(100vh - 90px));position:relative;width:var(--S);height:var(--S)}
+.orb{position:absolute;inset:0;margin:auto;width:calc(var(--S)*var(--D));height:calc(var(--S)*var(--D));animation:appear 1.1s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(var(--i)*.14s + .5s)}
+@keyframes appear{from{opacity:0;transform:scale(.2)}}
+.orbit{position:absolute;inset:0;border:1px solid rgba(170,180,255,.17);border-radius:50%;animation:spin var(--t) linear infinite;animation-delay:var(--d);pointer-events:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pl{--s:max(calc(var(--S)*var(--k)),15px);position:absolute;left:50%;top:0;width:var(--s);height:var(--s);margin:calc(var(--s)/-2) 0 0 calc(var(--s)/-2);background:none;border:0;color:inherit;cursor:pointer;pointer-events:auto;animation:spin var(--t) linear infinite reverse;animation-delay:var(--d)}
+.stage:has(.pl:hover) .orbit,.stage:has(.pl:hover) .pl{animation-play-state:paused}
+.sph{position:absolute;inset:0;border-radius:50%;z-index:1;transition:transform .35s cubic-bezier(.2,.9,.3,1.4);box-shadow:0 0 16px -3px var(--pc)}
+.sph::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 28%,transparent 30%,rgba(0,0,8,.72) 100%)}
+.pl:hover .sph,.sunb:hover .sph{transform:scale(1.4)}
+.pl em,.sunb em{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:3px;font-style:normal;font-size:clamp(10px,1.4vmin,13px);font-weight:700;white-space:nowrap;color:#fff;text-shadow:0 0 6px #000,0 0 3px #000;z-index:3;transition:color .3s}
+.pl:hover em,.sunb:hover em,.sel em{color:var(--pc)}
+.sel .sph{outline:2px solid rgba(255,255,255,.85);outline-offset:4px}
+.pl:focus-visible,.sunb:focus-visible{outline:2px solid #fff;border-radius:50%}
+.sunb{position:absolute;inset:0;margin:auto;width:calc(var(--S)*.1);height:calc(var(--S)*.1);background:none;border:0;color:inherit;cursor:pointer;--pc:#ffb43a;z-index:3}
+.sunb .sph{animation:pulse 3.5s ease-in-out infinite}
+.sph.sun::after{display:none}
+@keyframes pulse{0%,100%{box-shadow:0 0 50px 14px #ff9a1f88,0 0 120px 40px #ff5a0033}50%{box-shadow:0 0 80px 26px #ffb43a99,0 0 190px 70px #ff5a0044}}
+.rg{position:absolute;left:-58%;top:20%;width:216%;height:60%;border-radius:50%;z-index:0;pointer-events:none;transform:rotate(-16deg);background:radial-gradient(ellipse closest-side,transparent 56%,#b99b5ecc 58% 66%,#e9d29a 67% 80%,#c9ab6a99 81% 92%,transparent 94%)}
+.rg.f{z-index:2;clip-path:inset(50% 0 0 0)}
+.rg.u{left:20%;width:60%;top:-35%;height:170%;transform:rotate(8deg);background:radial-gradient(ellipse closest-side,transparent 92%,#c8f6f8 94% 97%,transparent 99%)}
+.rg.u.f{clip-path:inset(0 0 0 50%)}
+.mer{background:radial-gradient(circle at 28% 32%,#0003 0 6%,transparent 7%),radial-gradient(circle at 62% 58%,#0003 0 9%,transparent 10%),radial-gradient(circle at 45% 78%,#0003 0 5%,transparent 6%),radial-gradient(circle at 70% 25%,#0003 0 4%,transparent 5%),radial-gradient(circle at 30% 30%,#cbbdb5,#7a6f69 65%)}
+.ven{background:repeating-linear-gradient(20deg,#fff3 0 6%,#0001 6% 14%),linear-gradient(160deg,#f8dfa0,#d99a4e 45%,#f3cf8c 70%,#b8763a)}
+.ear{background:radial-gradient(ellipse 30% 22% at 35% 40%,#3f9b4f 0 90%,transparent),radial-gradient(ellipse 22% 28% at 62% 62%,#4fa055 0 90%,transparent),radial-gradient(ellipse 14% 10% at 68% 30%,#8ec06a 0 90%,transparent),radial-gradient(ellipse 45% 10% at 30% 72%,#fff8 0 90%,transparent),radial-gradient(ellipse 30% 8% at 65% 18%,#fff8 0 90%,transparent),radial-gradient(circle at 30% 30%,#4aa8ff,#1652b8 70%)}
+.mar{background:radial-gradient(ellipse 30% 12% at 50% 4%,#fff 0 90%,transparent),radial-gradient(ellipse 22% 14% at 40% 55%,#7a2a18 0 90%,transparent),radial-gradient(ellipse 18% 10% at 68% 40%,#8a3320aa 0 90%,transparent),radial-gradient(circle at 30% 30%,#ff9a6c,#b5391f 70%)}
+.jup{background:radial-gradient(ellipse 16% 9% at 66% 66%,#c2452a 0 60%,#d98a5a 90%,transparent),repeating-linear-gradient(180deg,#efd9b4 0 7%,#c58f5c 7% 13%,#f5e7cc 13% 18%,#a5683f 18% 24%,#e2c095 24% 30%)}
+.sat{background:repeating-linear-gradient(180deg,#f8e6b0 0 9%,#d8b978 9% 16%,#ecd598 16% 24%,#c7a45e 24% 30%)}
+.ura{background:radial-gradient(circle at 30% 30%,#d3fbfb,#5fc4cc 65%,#3a9aa5)}
+.nep{background:radial-gradient(ellipse 18% 11% at 40% 45%,#0d1a6e 0 80%,transparent),radial-gradient(ellipse 40% 5% at 50% 70%,#9db4ffaa 0 90%,transparent),radial-gradient(circle at 30% 30%,#6f8cff,#1c2fa0 70%)}
+.sun{background:radial-gradient(circle at 40% 38%,#fff6b0,#ffc83a 35%,#ff8a1a 70%,#e2470c)}
+#panel{position:fixed;top:0;right:0;height:100%;width:min(460px,100vw);z-index:20;padding:1.3rem 1.5rem 2rem;overflow-y:auto;background:linear-gradient(160deg,rgba(18,20,52,.94),rgba(6,7,20,.97));backdrop-filter:blur(14px);border-left:1px solid rgba(160,170,255,.25);transform:translateX(105%);transition:transform .7s cubic-bezier(.2,.9,.25,1)}
+body.open #panel{transform:none}
+#x{position:absolute;top:.9rem;right:1rem;width:38px;height:38px;border-radius:50%;border:1px solid rgba(160,170,255,.35);background:none;color:var(--ink);font-size:1.3rem;cursor:pointer;transition:transform .3s,background .3s;z-index:2}
+#x:hover{transform:rotate(90deg);background:rgba(255,255,255,.1)}
+.a{animation:up .7s cubic-bezier(.2,.9,.3,1) both;animation-delay:calc(var(--n)*.07s + .15s)}
+@keyframes up{from{opacity:0;transform:translateY(26px)}}
+.bigp{position:relative;width:190px;height:190px;margin:1.6rem auto 1.4rem;animation:float 6s ease-in-out infinite,pop .9s cubic-bezier(.2,.9,.3,1.3) both}
+.bigp .sph{box-shadow:0 0 70px -5px var(--pc)}
+.bigp .sph.sun{box-shadow:0 0 80px 20px #ff9a1f88}
+@keyframes float{50%{transform:translateY(-12px)}}
+@keyframes pop{from{opacity:0;transform:scale(.2) rotate(-90deg)}}
+#panel h2{font-family:Unbounded,sans-serif;font-weight:600;font-size:2.1rem;text-align:center;color:var(--pc);text-shadow:0 0 28px var(--pc)}
+.tag{display:table;margin:.5rem auto 1rem;padding:.2rem .9rem;border:1px solid var(--pc);border-radius:999px;font-size:.8rem;color:var(--pc)}
+.desc{color:#c3c8ee;margin-bottom:1.2rem;font-size:.95rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.tile{border-left:2px solid var(--pc);background:rgba(255,255,255,.045);padding:.6rem .8rem;border-radius:0 10px 10px 0}
+.tile small{display:block;color:var(--mute);font-size:.75rem}
+.tile b{font-family:Unbounded,sans-serif;font-size:1rem;font-weight:600}
+.fact{margin:1.2rem 0 .8rem;padding:1rem;border-radius:12px;background:linear-gradient(120deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px dashed var(--pc);font-size:.92rem}
+.fact strong{color:var(--pc)}
+.note{color:var(--mute);font-size:.72rem}
+.nav{display:flex;justify-content:space-between;gap:.6rem;margin-top:1.1rem}
+.nav button{flex:1;padding:.7rem;border-radius:999px;border:1px solid rgba(160,170,255,.35);background:none;color:var(--ink);font:inherit;font-weight:700;cursor:pointer;transition:all .3s}
+.nav button:hover{border-color:var(--pc);color:var(--pc);transform:translateY(-3px)}
+@media(max-width:760px){
+#panel{top:auto;bottom:0;width:100%;height:82vh;border-left:0;border-top:1px solid rgba(160,170,255,.3);border-radius:22px 22px 0 0;transform:translateY(105%)}
+body.open .wrap{transform:translateY(-16vh) scale(.8)}
+.bigp{width:130px;height:130px;margin:1rem auto}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<canvas id="sky"></canvas>
+<header><h1 id="ttl" aria-label="KOSMOS"></h1><p>Quyosh sistemasi. Istalgan sayyorani bosing va u haqida bilib oling.</p></header>
+<div class="wrap"><div class="stage" id="stage"></div></div>
+<aside id="panel" aria-live="polite"><button id="x" aria-label="Yopish">&times;</button><div id="pc"></div></aside>
+
+<script>
+"KOSMOS".split('').forEach(function(c,i){var s=document.createElement('span');s.textContent=c;s.style.animationDelay=(.2+i*.1)+'s';document.getElementById('ttl').appendChild(s)});
+
+var L=["Diametri","Yuza maydoni","Tabiiy yo'ldoshlari","Quyosh atrofida aylanishi","O'z o'qi atrofida aylanishi","Quyoshgacha masofa","O'rtacha harorat","Tortish kuchi"];
+var U=["km","mln km²","ta",0,"soat","mln km","°C","m/s²"];
+var D=[{id:'sun',n:'Quyosh',tp:'Yulduz',c:'#ffb43a',
+ t:"Quyosh sistemasi markazidagi yulduz. Sistema massasining 99,8 foizi unga tegishli. Uning nuri Yergacha taxminan 8 daqiqada yetib keladi.",
+ f:"Quyosh ichiga taxminan 1,3 million Yer sig'adi.",
+ s:[["Diametri",1392000,"km"],["Yuza maydoni",6088000,"mln km²"],["Sayyoralar soni",8,"ta"],["O'z o'qi atrofida",609,"soat"],["Yergacha masofa",150,"mln km"],["Sirt harorati",5500,"°C"],["Tortish kuchi",274,"m/s²"],["Galaktika atrofida",230,"mln yil"]]}];
+var P=[
+["mer","Merkuriy","Toshli sayyora","#cbbdb5",.21,.022,9,-2,"Eng kichik va Quyoshga eng yaqin sayyora. Atmosferasi deyarli yo'q, shuning uchun kunduzi juda issiq, kechasi juda sovuq. Yuzasi kraterlar bilan qoplangan.","Merkuriyda bir Quyosh kuni uning 2 yiliga teng.",[4879,74.8,0,88,"kun",1408,58,167,3.7]],
+["ven","Venera","Toshli sayyora","#f3cf8c",.31,.03,15,-9,"Yerning egizagi deyiladi, lekin qalin karbonat angidrid atmosferasi issiqni ushlab, uni eng issiq sayyoraga aylantirgan. Boshqalarga teskari yo'nalishda aylanadi.","Venerada Quyosh g'arbdan chiqib, sharqda botadi.",[12104,460.2,0,225,"kun",5832,108,464,8.9]],
+["ear","Yer","Toshli sayyora","#4aa8ff",.41,.032,22,-14,"Hayot mavjud bo'lgan yagona ma'lum sayyora. Yuzasining taxminan 71 foizini okean egallaydi. Magnit maydoni uni Quyosh zarralaridan himoya qiladi.","Yer Quyosh atrofida soniyasiga taxminan 30 km tezlikda uchadi.",[12742,510.1,1,365,"kun",24,150,15,9.8]],
+["mar","Mars","Toshli sayyora","#ff9a6c",.5,.026,30,-25,"Temir oksidi tufayli qizil ko'rinadi. Unda Olimp tog'i, ya'ni sistemadagi eng baland vulqon, va ulkan Mariner vodiysi bor.","Marsning ikkita kichik yo'ldoshi bor: Fobos va Deymos.",[6779,144.4,2,687,"kun",24.6,228,-65,3.7]],
+["jup","Yupiter","Gaz gigant","#e2c095",.64,.068,48,-6,"Eng katta sayyora, qolgan hamma sayyoralar massasidan 2,5 baravar og'ir. Katta Qizil Dog'i yuz yillardan beri davom etayotgan ulkan bo'rondir.","Yupiterning ichiga 1300 dan ortiq Yer sig'adi.",[139820,61420,97,11.9,"yil",9.9,778,-110,24.8]],
+["sat","Saturn","Gaz gigant","#f8e6b0",.77,.056,68,-20,"Muz va tosh zarralaridan iborat go'zal halqalari bilan mashhur. Zichligi suvnikidan kam.","Saturn halqalarining qalinligi ko'pincha atigi bir necha o'n metr.",[116460,42700,274,29.4,"yil",10.7,1434,-140,10.4]],
+["ura","Uran","Muzli gigant","#7fdde3",.88,.04,92,-70,"Metan gazi tufayli havorang-yashil ko'rinadi. Deyarli yonboshlab aylanadi, shu sababli uning fasllari juda uzoq davom etadi.","Uranning qutblarida Quyosh 42 yil ko'rinadi, keyingi 42 yil ko'rinmaydi.",[50724,8083,29,84,"yil",17.2,2871,-195,8.9]],
+["nep","Neptun","Muzli gigant","#6f8cff",.98,.04,120,-80,"Eng uzoq sayyora. Unda Quyosh sistemasidagi eng kuchli shamollar esadi, tezligi soatiga 2000 km ga yetadi.","Neptun 1846 yilda kashf qilinib, Quyosh atrofida birinchi to'liq aylanishini 2011 yilda tugatdi.",[49244,7618,16,165,"yil",16.1,4495,-200,11.2]]];
+P.forEach(function(p){
+  var v=p[10];
+  D.push({id:p[0],n:p[1],tp:p[2],c:p[3],t:p[8],f:p[9],
+    s:[0,1,2,3,5,6,7,8].map(function(k,j){return[L[j],v[k],j==3?v[4]:U[j]]})});
+});
+
+// Sahna
+var html='';
+P.forEach(function(p,i){
+  var ring=(p[0]=='sat'||p[0]=='ura')?1:0,u=p[0]=='ura'?' u':'';
+  html+='<div class="orb" style="--D:'+p[4]+';--i:'+i+'"><div class="orbit" style="--t:'+p[6]+'s;--d:'+p[7]+'s">'+
+  '<button class="pl" data-i="'+(i+1)+'" aria-label="'+p[1]+'" style="--pc:'+p[3]+';--k:'+p[5]+'">'+
+  (ring?'<i class="rg'+u+'"></i>':'')+'<span class="sph '+p[0]+'"></span>'+(ring?'<i class="rg f'+u+'"></i>':'')+'<em>'+p[1]+'</em></button></div></div>';
+});
+html+='<button class="sunb" data-i="0" aria-label="Quyosh"><span class="sph sun"></span><em>Quyosh</em></button>';
+document.getElementById('stage').innerHTML=html;
+
+// Panel
+var pc=document.getElementById('pc'),cur=-1;
+function fmt(v,d){return v.toFixed(d).replace(/\B(?=(\d{3})+(?!\d))/g,' ')}
+function openP(i){
+  cur=i;var o=D[i];
+  document.querySelectorAll('.sel').forEach(function(e){e.classList.remove('sel')});
+  document.querySelector('[data-i="'+i+'"]').classList.add('sel');
+  var ring=(o.id=='sat'||o.id=='ura'),u=o.id=='ura'?' u':'',n=3,g='';
+  o.s.forEach(function(r){var d=(String(r[1]).split('.')[1]||'').length;
+    g+='<div class="tile a" style="--n:'+(n++)+'"><small>'+r[0]+'</small><b><span data-to="'+r[1]+'" data-d="'+d+'">0</span> '+r[2]+'</b></div>'});
+  var pv=D[(i+8)%9].n,nx=D[(i+1)%9].n;
+  pc.innerHTML='<div class="bigp" style="--pc:'+o.c+'">'+(ring?'<i class="rg'+u+'"></i>':'')+'<span class="sph '+o.id+'"></span>'+(ring?'<i class="rg f'+u+'"></i>':'')+'</div>'+
+  '<h2 class="a" style="--n:0">'+o.n+'</h2><span class="tag a" style="--n:1">'+o.tp+'</span>'+
+  '<p class="desc a" style="--n:2">'+o.t+'</p><div class="grid">'+g+'</div>'+
+  '<div class="fact a" style="--n:'+(n++)+'"><strong>Bilasizmi?</strong> '+o.f+'</div>'+
+  '<p class="note a" style="--n:'+(n++)+'">Yo\'ldoshlar soni yangi kashfiyotlar bilan o\'zgarib turadi.</p>'+
+  '<div class="nav a" style="--n:'+(n++)+'"><button data-go="-1">&larr; '+pv+'</button><button data-go="1">'+nx+' &rarr;</button></div>';
+  document.getElementById('panel').style.setProperty('--pc',o.c);
+  document.body.classList.add('open');
+  document.getElementById('panel').scrollTop=0;
+  pc.querySelectorAll('[data-to]').forEach(function(el){
+    var to=parseFloat(el.dataset.to),d=+el.dataset.d,t0=null;
+    (function step(t){if(!t0)t0=t;var k=Math.min((t-t0)/1600,1),e=1-Math.pow(1-k,3);el.textContent=fmt(to*e,d);if(k<1)requestAnimationFrame(step)})(performance.now());
+  });
+}
+function closeP(){document.body.classList.remove('open');document.querySelectorAll('.sel').forEach(function(e){e.classList.remove('sel')});cur=-1}
+document.getElementById('stage').addEventListener('click',function(e){var b=e.target.closest('[data-i]');if(b)openP(+b.dataset.i)});
+pc.addEventListener('click',function(e){var b=e.target.closest('[data-go]');if(b)openP((cur+ +b.dataset.go+9)%9)});
+document.getElementById('x').onclick=closeP;
+addEventListener('keydown',function(e){
+  if(e.key=='Escape')closeP();
+  if(cur>=0&&e.key=='ArrowRight')openP((cur+1)%9);
+  if(cur>=0&&e.key=='ArrowLeft')openP((cur+8)%9);
+});
+
+// Yulduzli osmon
+var cv=document.getElementById('sky'),cx=cv.getContext('2d'),W,H,stars=[],sh=[],mx=0,my=0;
+function size(){W=cv.width=innerWidth;H=cv.height=innerHeight;stars=[];
+  for(var i=0;i<Math.min(280,W*H/6000);i++)stars.push({x:Math.random()*W,y:Math.random()*H,z:Math.random()*.9+.1,r:Math.random()*1.4+.3,p:Math.random()*6.28})}
+size();addEventListener('resize',size);
+addEventListener('mousemove',function(e){mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+setInterval(function(){if(sh.length<2)sh.push({x:Math.random()*W*.7,y:Math.random()*H*.5,v:9+Math.random()*6})},2500);
+(function draw(t){
+  cx.clearRect(0,0,W,H);
+  stars.forEach(function(s){
+    cx.globalAlpha=.35+.65*Math.abs(Math.sin(t/900+s.p));
+    cx.fillStyle=s.z>.7?'#cfd6ff':'#fff';
+    cx.beginPath();cx.arc(s.x-mx*50*s.z,s.y-my*35*s.z,s.r*s.z+.2,0,6.28);cx.fill();
+  });
+  cx.globalAlpha=1;
+  sh=sh.filter(function(m){
+    m.x+=m.v;m.y+=m.v*.55;
+    var g=cx.createLinearGradient(m.x,m.y,m.x-90,m.y-50);
+    g.addColorStop(0,'rgba(255,255,255,.95)');g.addColorStop(1,'rgba(255,255,255,0)');
+    cx.strokeStyle=g;cx.lineWidth=2;cx.beginPath();cx.moveTo(m.x,m.y);cx.lineTo(m.x-90,m.y-50);cx.stroke();
+    return m.x<W+100&&m.y<H+100;
+  });
+  requestAnimationFrame(draw);
+})(0);
+</script>
+</body>
+</html>
